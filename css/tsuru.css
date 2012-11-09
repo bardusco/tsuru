@@ -23,8 +23,68 @@ padding-bottom: 40px;
 
 .front-page .item {
     border-right: 1px dotted lightgray;
+    margin: 0px;
+    padding: 0px 15px 0px 15px;
+}
+
+.front-page .first {
+    border-left: 1px dotted lightgray;
 }
 
 .front-page .span3 {
-    height: 120px;
+    height: 165px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.front-page .span3 p {
+    color: #959799;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 25px;
+}
+
+.front-page .span3 h2 {
+    font-size: 22px;
+    font-weight: normal;
+    line-height: 50px;
+}
+
+.front-page .span3 a:link {
+    color:inherit;
+}
+
+.front-page .span3 a:hover {
+    text-decoration: none;
+}
+
+.front-page .icon{
+    color: #0066CC;
+    font-size: 40px;
+}
+
+footer {
+    border-top: 1px solid #EEEEEE;
+    margin-top: 40px;
+    padding-top: 10px;
+}
+
+.clickable {
+    position: relative;
+}
+
+.clickable a {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    text-decoration: none;
+    width: 100%;
+    z-index: 10;
+
+    /* to be also clickable in IE */
+    background-color: white;
+    filter: alpha(opacity=1);
+    opacity: 0;
 }
