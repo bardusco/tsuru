@@ -47,24 +47,24 @@ body {
     text-decoration: none;
 }
 
-.front-page .span3 p {
+.front-page p {
     color: #959799;
     font-size: 16px;
     font-weight: 300;
     line-height: 25px;
 }
 
-.front-page .span3 h2 {
+.front-page h2 {
     font-size: 22px;
     font-weight: normal;
     line-height: 50px;
 }
 
-.front-page .span3 a:link {
-    color:inherit;
+.front-page a:link {
+    color: inherit;
 }
 
-.front-page .span3 a:hover {
+.front-page a:hover {
     text-decoration: none;
 }
 
