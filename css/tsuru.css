@@ -1,7 +1,12 @@
 body {
-padding-top: 60px;
-padding-bottom: 40px;
+    padding-top: 60px;
+    padding-bottom: 40px;
 }
+
+.navbar {
+    margin-left: 190px;
+}
+
 .navbar-inner {
     background: none;
     box-shadow: none;
@@ -15,6 +20,10 @@ padding-bottom: 40px;
 }
 .navbar .nav > li > a:hover {
     color: #333;
+}
+
+.hero-unit img {
+    margin-left: 130px;
 }
 
 .front-page {
