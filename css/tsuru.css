@@ -79,6 +79,10 @@ footer {
     padding-top: 10px;
 }
 
+footer p {
+    margin-left: 135px;
+}
+
 .clickable {
     position: relative;
 }
