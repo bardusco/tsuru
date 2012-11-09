@@ -1,0 +1,11 @@
+.front-page {
+    margin-left: 165px;
+}
+
+.front-page .item {
+    border-right: 1px dotted lightgray;
+}
+
+.front-page .span3 {
+    height: 120px;
+}
