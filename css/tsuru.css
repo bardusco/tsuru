@@ -3,9 +3,9 @@ body {
     padding-bottom: 40px;
 }
 
-.navbar {
-    margin-left: 190px;
-}
+/* .navbar { */
+/*     margin-left: 190px; */
+/* } */
 
 .navbar-inner {
     background: none;
@@ -22,13 +22,13 @@ body {
     color: #333;
 }
 
-.hero-unit img {
-    margin-left: 130px;
-}
+/* .hero-unit img { */
+/*     margin-left: 130px; */
+/* } */
 
-.front-page {
-    margin-left: 165px;
-}
+/* .front-page { */
+/*     margin-left: 165px; */
+/* } */
 
 .front-page .item {
     border-right: 1px dotted lightgray;
@@ -82,7 +82,7 @@ footer {
 footer p {
     color: #959799;
     font-weight: 300;
-    margin-left: 135px;
+    /* margin-left: 135px; */
 }
 
 .clickable {
