@@ -90,7 +90,8 @@ run-docker:
 	@go build -o websrv ./api
 	@go build -o collect ./collector/
 	@sudo service beanstalkd start
-	@./websrv -config=$(PWD)/etc/tsuru-docker.conf &
+	# TODO: remove sudo. docker needs sudo
+	@sudo ./websrv -config=$(PWD)/etc/tsuru-docker.conf &
 	@./collect -config=$(PWD)/etc/tsuru-docker.conf &
 	@sudo su - git -c gandalf-webserver &
 	@sudo su - git -c "git daemon --base-path=/var/repositories --syslog --export-all" &
@@ -98,7 +99,8 @@ run-docker:
 stop:
 	@if ps ax|grep "[s]udo su - git -c gandalf-webserver"; then ps ax|grep "[s]udo su - git -c gandalf-webserver"|awk {'print $$1'}|xargs sudo kill; fi
 	@if ps ax|grep "[g]it-daemon"; then ps ax|grep "[g]it-daemon"|awk {'print $$1'}|xargs sudo kill; fi
-	@if ps ax|grep "[w]ebsrv -config"; then ps ax|grep "[w]ebsrv -config"|awk {'print $$1'}|xargs kill; fi
+	# TODO: remove sudo. docker needs sudo
+	@if ps ax|grep "[w]ebsrv -config"; then ps ax|grep "[w]ebsrv -config"|awk {'print $$1'}|sudo xargs kill; fi
 	@if ps ax|grep "[c]ollect -config"; then ps ax|grep "[c]ollect -config"|awk {'print $$1'}|xargs kill; fi
 	@sudo service beanstalkd stop
 	@rm -f collect websrv
