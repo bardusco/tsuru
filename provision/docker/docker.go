@@ -11,7 +11,7 @@ import (
 	"github.com/globocom/tsuru/fs"
 	"github.com/globocom/tsuru/log"
 	"os/exec"
-	"strings"
+    "github.com/dotcloud/docker"
 )
 
 var fsystem fs.Fs
@@ -47,15 +47,21 @@ func (c *container) ip() (err error, ip string) {
 	log.Printf("Getting ipaddress to instance %s", c.instanceId)
 	err, instance_json := runCmd("sudo", docker, "inspect", c.instanceId)
 	if err != nil {
-		log.Printf("error(%s) trying to inspect docker instance(%s) to get ipaddress", err)
-	}
+		log.Printf("error(%s) trying to inspect docker instance(%s) to get ipaddress", err, c.instanceId)
+		return err, ""
+	} else if instance_json == "" {
+        log.Printf("error: empty json returned for instance(%s) while trying to get ipaddress", c.instanceId)
+        //TODO: provide better error code
+		return err, ""
+    }
 	var jsonBlob = []byte(instance_json)
 	var result map[string]interface{}
 	err2 := json.Unmarshal(jsonBlob, &result)
-	NetworkSettings := result["NetworkSettings"].(map[string]interface{})
 	if err2 != nil {
-		log.Printf("error(%s) parsing jason from docker when trying to get ipaddress", err2)
+        log.Printf("error(%s) parsing json from docker when trying to get ipaddress\nJsonBlob:%s.", err2, jsonBlob)
+		return err2, ""
 	}
+	NetworkSettings := result["NetworkSettings"].(map[string]interface{})
 	instance_ip := NetworkSettings["IpAddress"].(string)
 	if instance_ip != "" {
 		log.Printf("Instance IpAddress: %s", instance_ip)
@@ -68,12 +74,29 @@ func (c *container) ip() (err error, ip string) {
 // create creates a docker container with base template by default.
 // TODO: this template already have a public key, we need to manage to install some way.
 func (c *container) create() (err error, instance_id string) {
-	docker, err := config.GetString("docker:binary")
-	if err != nil {
-		return err, ""
-	}
-	err, instance_id = runCmd("sudo", docker, "run", "-d", "base-nginx-sshd-key", "/usr/sbin/sshd", "-D")
-	instance_id = strings.Replace(instance_id, "\n", "", -1)
+    runtime, err := docker.NewRuntime()
+    if err != nil {
+        log.Printf("Error creating docker runtime:%s", err)
+        return err, ""
+    }
+    docker_container, err := runtime.Create(
+        &docker.Config{
+                Image:  "base-nginx-sshd-key",
+                Cmd:    []string{"/usr/sbin/sshd", "-D"},
+            },
+        )
+    if err != nil {
+        log.Printf("Error creating docker container: %s", err)
+        return err, ""
+    }
+    log.Printf("Container.State.Running:%b", docker_container.State.Running)
+    if err := docker_container.Start(); err != nil {
+        log.Printf("Error starting docker container: %s", err)
+        return err, ""
+    }
+    log.Printf("Container.State.Running:%s", docker_container.State.Running)
+    log.Printf("container.NetworkSettings.IpAddress:%s", docker_container.NetworkSettings.IpAddress)
+    instance_id = docker_container.Id
 	log.Printf("docker instance_id=%s", instance_id)
 	return err, instance_id
 }
